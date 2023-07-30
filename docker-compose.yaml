@@ -1,0 +1,58 @@
+version: '3.7'
+
+services:
+  home-assistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - ./ha/config/:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "8123:8123"
+    networks:
+      - ha-network
+
+
+  plccoms:
+    image: rosiste/plccoms
+    restart: always
+    environment:
+      - TZ=Europe/Prague
+    volumes:
+      - ./plc/log:/var/log/teco
+      - ./plc/etc:/etc/teco
+    ports:
+      - "5010:5010"
+    networks:
+      - ha-network
+
+  mosquitto:
+    image: eclipse-mosquitto
+    restart: always
+    environment:
+      - TZ=Europe/Prague
+    volumes:
+        - ./mosquitto/config/:/mosquitto/config/
+        - ./mosquitto/log/:/mosquitto/log/
+        - ./mosquitto/data/:/mosquitto/data/
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      - ha-network
+
+  plccoms-mqtt-bridge:
+    image: ocervinka/plccoms-mqtt-bridge
+    restart: always
+    environment:
+      - TZ=Europe/Prague
+    volumes:
+      - ./plccoms-mqtt-bridge/config.yaml:/etc/plccoms-mqtt-bridge/config.yaml
+    networks:
+      - ha-network
+
+networks:
+  ha-network:
+    driver: bridge

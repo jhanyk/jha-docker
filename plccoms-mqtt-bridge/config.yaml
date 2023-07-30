@@ -1,0 +1,116 @@
+plccoms:
+  host: plccoms
+  port: 5010
+
+mqtt:
+  scheme: tcp
+  host: mosquitto
+  port: 1883
+  clientId: plccoms-mqtt-bridge
+
+var-blacklist:
+  - "STATE_.+"
+  - ".+_ON"
+  - ".+_OFF"
+  - ".+_TRIG"
+
+  - "SYSTEM_24HOUR_OBSERVAITON_.+"
+  - "SYSTEM_AG.+"
+  - "USERBITS"
+  - "__.+"
+
+var-mapping:
+ #senzory fungující samostatně
+ - var: "SENSOR_KOTEL_TEPLOTA"
+   state-topic: "home/KOTEL_TEPLOTA/state"
+
+ - var: "SENSOR_KOUPELNA_TEPLOTA"
+   state-topic: "home/KOUPELNA_TEPLOTA/state"
+
+ - var: "SENSOR_DILNA_TEPLOTA"
+   state-topic: "home/DILNA_TEPLOTA/state"
+
+ - var: "SENSOR_ZPATECKA_TEPLOTA"
+   state-topic: "home/ZPATECKA_TEPLOTA/state"
+
+ - var: "SENSOR_OUTDOOR_TEPLOTA"
+   state-topic: "home/OUTDOOR_TEPLOTA/state"
+
+ - var: "SENSOR_OUTDOOR_SVETLO"
+   state-topic: "home/OUTDOOR_SVETLO/state"
+
+ - var: "SENSOR_OUTDOOR_VLHKOST"
+   state-topic: "home/OUTDOOR_VLHKOST/state"
+
+ - var: "SENSOR_KOUPELNA_VLHKOST"
+   state-topic: "home/KOUPELNA_VLHKOST/state"
+
+# analogove vystupy fungující samostatně
+ - var: "SVETLO_HALA"
+   state-topic: "home/hala/svetlo/state"
+   state-function: NonZeroToOn  
+   cmd-topic: "home/hala/svetlo/switch"
+   cmd-function: OnTo97  
+
+ - var: "SVETLO_CHODBA"
+   state-topic: "home/chodba/svetlo/state"
+   state-function: NonZeroToOn  
+   cmd-topic: "home/chodba/svetlo/switch"
+   cmd-function: OnTo97  
+
+ - var: "SVETLO_OBYVAK"
+   state-topic: "home/obyvak/svetlo/state"
+   state-function: NonZeroToOn  
+   cmd-topic: "home/obyvak/svetlo/switch"
+   cmd-function: OnTo97  
+
+#testy
+ - var: "WSB2_TERIK_INPUT_3"
+   state-topic: "home/terik/input_3"
+ 
+ - var: "WSB2_TERIK_INPUT_4"
+   state-topic: "home/terik/input_4"
+ 
+ - var: "KLARKA_TEPLOTA"
+   state-topic: "home/klarka/teplota"
+
+#switch
+# očekávám, že tohle převede všechny proměnné OUT_cokoliv do HA
+ - var: "OUT_(.+)$"
+   state-topic: "home/{0}/state"
+   state-function: OneToOn
+   cmd-topic: "home/{0}/switch"
+   cmd-function: OnToOne
+
+ - var: "WSB2_(.+)$"
+   state-topic: "home/{0}/state"
+
+# funkční nastavení po samostatných proměnných
+# - var: "OUT_DILNA_TOPENI"
+#   state-topic: "home/OUT_DILNA_TOPENI/state"
+#   state-function: OneToOn
+#   cmd-topic: "home/OUT_DILNA_TOPENI/switch"
+#   cmd-function: OnToOne
+
+# - var: "OUT_GYM_TOPENI"
+#   state-topic: "home/OUT_GYM_TOPENI/state"
+#   state-function: OneToOn
+#   cmd-topic: "home/OUT_GYM_TOPENI/switch"
+#   cmd-function: OnToOne
+
+# původní nastavení od Kuby
+#  - var: "TOP_([^_]+)$"
+#    state-topic: "home/{1}/state"
+#    state-function: OneToOn  
+#    cmd-topic: "home/{1}/switch"
+#    cmd-function: OnToOne
+#
+# vzor z dokumentace bridge  
+#   - var: "RELAY_(.*)_(.*)_(.*)"
+#    state-topic: "home/{3}/{2}"
+#
+#   - var: ".*"
+#    state-topic: "home/{0}"
+
+#  - var: "(.*)"
+#    state-topic: "home/{1}"
