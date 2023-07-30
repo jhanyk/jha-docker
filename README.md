@@ -29,12 +29,12 @@ git clone https://github.com/jhanyk/plc-docker.git
 
 ### Run the HA
 ```
-docker-compose -f opt/docker-compose.yaml up -d
+docker-compose -f plc-docker/docker-compose.yaml up -d
 ```
 
 ### Stop the HA
 ```
-docker-compose -f opt/docker-compose.yaml down
+docker-compose -f plc-docker/docker-compose.yaml down
 ```
 
 ## Accessing and configuring HA
