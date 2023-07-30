@@ -22,7 +22,7 @@ sudo pip install docker-compose
 
 ### Clone the git repository:
 ```
-git clone https://github.com/kub/ha-plc.git
+git clone https://github.com/jhanyk/plc-docker.git
 ```
 
 ## Running / stopping HA
