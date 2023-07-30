@@ -22,19 +22,19 @@ sudo pip install docker-compose
 
 ### Clone the git repository:
 ```
-git clone https://github.com/jhanyk/plc-docker.git
+git clone https://github.com/jhanyk/jha-docker.git
 ```
 
 ## Running / stopping HA
 
 ### Run the HA
 ```
-docker-compose -f plc-docker/docker-compose.yaml up -d
+docker-compose -f jha-docker/docker-compose.yaml up -d
 ```
 
 ### Stop the HA
 ```
-docker-compose -f plc-docker/docker-compose.yaml down
+docker-compose -f jha-docker/docker-compose.yaml down
 ```
 
 ## Accessing and configuring HA

@@ -7,6 +7,9 @@ services:
     volumes:
       - ./ha/config/:/config
       - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/ttyUSB1:/dev/ttyUSB1
     restart: unless-stopped
     privileged: true
     ports:
@@ -18,13 +21,13 @@ services:
   plccoms:
     image: rosiste/plccoms
     restart: always
+    ports:
+      - "5010:5010"
     environment:
       - TZ=Europe/Prague
     volumes:
       - ./plc/log:/var/log/teco
       - ./plc/etc:/etc/teco
-    ports:
-      - "5010:5010"
     networks:
       - ha-network
 
@@ -44,7 +47,7 @@ services:
       - ha-network
 
   plccoms-mqtt-bridge:
-    image: ocervinka/plccoms-mqtt-bridge
+    image: kub4/plccoms-mqtt-bridge:latest
     restart: always
     environment:
       - TZ=Europe/Prague
